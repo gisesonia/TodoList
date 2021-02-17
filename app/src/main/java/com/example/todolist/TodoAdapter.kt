@@ -6,16 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_todo.view.*
+import com.example.todolist.databinding.ItemTodoBinding
 
 
 class TodoAdapter(
     private val todos: MutableList<Todo>
 ) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
-    class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class TodoViewHolder(val binding: ItemTodoBinding) : RecyclerView.ViewHolder(binding.root)
+    //class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     //passa o layout que tem cada item da lista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
+        return TodoViewHolder(
+            ItemTodoBinding.inflate(LayoutInflater.from(parent.context),
+                parent,
+                false
+        ))
+    }
+    /*override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         return TodoViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_todo,
@@ -23,7 +31,7 @@ class TodoAdapter(
                 false
             )
         )
-    }
+    }*/
 
     fun addTodo(todo: Todo) {
         todos.add(todo)
@@ -47,7 +55,7 @@ class TodoAdapter(
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val currentTodo = todos[position]
-        holder.itemView.apply {
+        holder.binding.apply {
             tvTodoTitle.text = currentTodo.title
             cbDone.isChecked = currentTodo.isChecked
             toggleStrikeThrough(tvTodoTitle, currentTodo.isChecked)
@@ -57,7 +65,18 @@ class TodoAdapter(
             }
         }
     }
-
+  /*  override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
+        val currentTodo = todos[position]
+        holder.itemView.apply {
+            tvTodoTitle.text = currentTodo.title
+            cbDone.isChecked = currentTodo.isChecked
+            toggleStrikeThrough(tvTodoTitle, currentTodo.isChecked)
+            cbDone.setOnCheckedChangeListener{ _, isChecked ->
+                toggleStrikeThrough(tvTodoTitle, isChecked)
+                currentTodo.isChecked = !currentTodo.isChecked
+            }
+        }
+    }*/
     override fun getItemCount(): Int {
         return todos.size
     }
