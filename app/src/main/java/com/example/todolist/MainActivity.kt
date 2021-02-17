@@ -37,4 +37,9 @@ class MainActivity : AppCompatActivity() {
             todoAdapter.deleteDoneTodos()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
 }
